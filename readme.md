@@ -1,0 +1,1 @@
+# Laravel Newsletter Subscription

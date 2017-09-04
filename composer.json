@@ -1,0 +1,13 @@
+{
+    "name": "riverskies/laravel-newsletter-subscription",
+    "description": "Simple newsletter subscription for Laravel projects.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Barnabas Kecskes",
+            "email": "barnabas@riverskies.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
