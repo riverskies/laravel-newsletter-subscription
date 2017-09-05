@@ -7,9 +7,7 @@ use Riverskies\LaravelNewsletterSubscription\Providers\NewsletterSubscriptionSer
 
 class TestCase extends OrchestraTestCase
 {
-    protected $table;
-    protected $subscribeUrl;
-    protected $unsubscribeUrl;
+    private $config;
 
     /**
      * Default overrides.
@@ -20,9 +18,7 @@ class TestCase extends OrchestraTestCase
 
         $this->withFactories(__DIR__.'/../database/factories');
 
-        $this->table = config('newsletter_subscription.table_name');
-        $this->subscribeUrl = config('newsletter_subscription.subscribe_url');
-        $this->unsubscribeUrl = config('newsletter_subscription.unsubscribe_url');
+        $this->config = config('newsletter_subscription');
     }
 
     /**
@@ -42,6 +38,18 @@ class TestCase extends OrchestraTestCase
      */
     public function getUnsubscribeUrlFor($hash)
     {
-        return str_replace('{hash}', $hash, $this->unsubscribeUrl);
+        return str_replace('{hash}', $hash, $this->config['unsubscribe_url']);
+    }
+
+    /**
+     * Config accessor.
+     *
+     * @param $key
+     * @return mixed
+     */
+    public function config($key)
+    {
+        $this->assertArrayHasKey($key, $this->config);
+        return $this->config[$key];
     }
 }

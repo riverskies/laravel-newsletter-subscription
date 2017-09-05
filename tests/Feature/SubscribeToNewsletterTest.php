@@ -19,10 +19,10 @@ class SubscribeToNewsletterTest extends TestCase
         Mail::fake();
         $this->withoutExceptionHandling();
 
-        $response = $this->post($this->subscribeUrl, ['email'=>'john@example.com']);
+        $response = $this->post($this->config('subscribe_url'), ['email'=>'john@example.com']);
 
         $response->assertRedirect('/');
-        $this->assertDatabaseHas($this->table, ['email'=>'john@example.com']);
+        $this->assertDatabaseHas($this->config('table_name'), ['email'=>'john@example.com']);
         $response->assertSessionHas('flash', 'You will receive the latest news at john@example.com');
     }
 
@@ -33,11 +33,11 @@ class SubscribeToNewsletterTest extends TestCase
         factory(NewsletterSubscription::class)->create(['email'=>'john@example.com']);
         $this->assertCount(1, NewsletterSubscription::all());
 
-        $response = $this->post($this->subscribeUrl, ['email'=>'john@example.com']);
+        $response = $this->post($this->config('subscribe_url'), ['email'=>'john@example.com']);
 
         $response->assertRedirect('/');
         $this->assertCount(1, NewsletterSubscription::all());
-        $this->assertDatabaseHas($this->table, ['email'=>'john@example.com']);
+        $this->assertDatabaseHas($this->config('table_name'), ['email'=>'john@example.com']);
         $response->assertSessionHas('flash', 'You will receive the latest news at john@example.com');
         Queue::assertNotPushed(SendNewsletterSubscriptionConfirmation::class);
     }
@@ -46,7 +46,7 @@ class SubscribeToNewsletterTest extends TestCase
     public function a_confirmation_email_is_queued_to_be_sent_after_each_new_subscription()
     {
         Queue::fake();
-        $this->post($this->subscribeUrl, ['email'=>'john@example.com']);
+        $this->post($this->config('subscribe_url'), ['email'=>'john@example.com']);
 
         $subscription = NewsletterSubscription::first();
 
@@ -58,7 +58,7 @@ class SubscribeToNewsletterTest extends TestCase
     /** @test */
     public function the_email_is_required()
     {
-        $response = $this->post($this->subscribeUrl, []);
+        $response = $this->post($this->config('subscribe_url'), []);
 
         $response->assertRedirect('/');
         $response->assertSessionHasErrors('email');
@@ -68,7 +68,7 @@ class SubscribeToNewsletterTest extends TestCase
     /** @test */
     public function the_email_must_be_a_valid_address()
     {
-        $response = $this->post($this->subscribeUrl, ['email'=>'gibberish']);
+        $response = $this->post($this->config('subscribe_url'), ['email'=>'gibberish']);
 
         $response->assertRedirect('/');
         $response->assertSessionHasErrors('email');
