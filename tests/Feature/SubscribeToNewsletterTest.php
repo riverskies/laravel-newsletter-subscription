@@ -19,9 +19,13 @@ class SubscribeToNewsletterTest extends TestCase
         Mail::fake();
         $this->withoutExceptionHandling();
 
-        $response = $this->post($this->config('subscribe_url'), ['email'=>'john@example.com']);
+        $response = $this->post(
+            $this->config('subscribe_url'),
+            ['email' => 'john@example.com'],
+            ['HTTP_REFERER' => '/test']
+        );
 
-        $response->assertRedirect('/');
+        $response->assertRedirect('/test');
         $this->assertDatabaseHas($this->config('table_name'), ['email'=>'john@example.com']);
         $response->assertSessionHas('flash', 'You will receive the latest news at john@example.com');
     }
@@ -33,9 +37,13 @@ class SubscribeToNewsletterTest extends TestCase
         factory(NewsletterSubscription::class)->create(['email'=>'john@example.com']);
         $this->assertCount(1, NewsletterSubscription::all());
 
-        $response = $this->post($this->config('subscribe_url'), ['email'=>'john@example.com']);
+        $response = $this->post(
+            $this->config('subscribe_url'),
+            ['email'=>'john@example.com'],
+            ['HTTP_REFERER' => '/test']
+        );
 
-        $response->assertRedirect('/');
+        $response->assertRedirect('/test');
         $this->assertCount(1, NewsletterSubscription::all());
         $this->assertDatabaseHas($this->config('table_name'), ['email'=>'john@example.com']);
         $response->assertSessionHas('flash', 'You will receive the latest news at john@example.com');
@@ -58,9 +66,13 @@ class SubscribeToNewsletterTest extends TestCase
     /** @test */
     public function the_email_is_required()
     {
-        $response = $this->post($this->config('subscribe_url'), []);
+        $response = $this->post(
+            $this->config('subscribe_url'),
+            [],
+            ['HTTP_REFERER' => '/test']
+        );
 
-        $response->assertRedirect('/');
+        $response->assertRedirect('/test');
         $response->assertSessionHasErrors('email');
         $this->assertEmpty(NewsletterSubscription::all());
     }
@@ -68,9 +80,13 @@ class SubscribeToNewsletterTest extends TestCase
     /** @test */
     public function the_email_must_be_a_valid_address()
     {
-        $response = $this->post($this->config('subscribe_url'), ['email'=>'gibberish']);
+        $response = $this->post(
+            $this->config('subscribe_url'),
+            ['email'=>'gibberish'],
+            ['HTTP_REFERER' => '/test']
+        );
 
-        $response->assertRedirect('/');
+        $response->assertRedirect('/test');
         $response->assertSessionHasErrors('email');
         $this->assertEmpty(NewsletterSubscription::all());
     }

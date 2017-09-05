@@ -23,7 +23,7 @@ class NewsletterSubscriptionController extends Controller
             SendNewsletterSubscriptionConfirmation::dispatch($subscription);
         }
 
-        return redirect('/')
+        return redirect()->back()
             ->with('flash', 'You will receive the latest news at ' . $data['email']);
     }
 
@@ -36,7 +36,7 @@ class NewsletterSubscriptionController extends Controller
         $subscription = app('subscription-code-generator')->decode($hash);
         $subscription->delete();
 
-        return redirect('/')
+        return redirect()->back()
             ->with('flash', 'You will no longer receive our newsletter at ' . $subscription->email);
     }
 }
