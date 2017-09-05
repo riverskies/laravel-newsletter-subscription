@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Illuminate\Foundation\Testing\TestResponse;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Riverskies\LaravelNewsletterSubscription\Providers\NewsletterSubscriptionServiceProvider;
 
@@ -19,6 +20,13 @@ class TestCase extends OrchestraTestCase
         $this->withFactories(__DIR__.'/../database/factories');
 
         $this->config = config('newsletter_subscription');
+
+        TestResponse::macro('assertRedirectedBack', function($referer = null) {
+            if (!$referer) {
+                $referer = app('request')->header('referer') ?: '/';
+            }
+            $this->assertRedirect($referer);
+        });
     }
 
     /**

@@ -18,10 +18,10 @@ class UnsubscribeFromNewsletterTest extends TestCase
 
         $response = $this->get(
             $this->getUnsubscribeUrlFor($subscription->hash),
-            ['HTTP_REFERER' => '/test']
+            ['HTTP_REFERER' => '/original-url']
         );
 
-        $response->assertRedirect('/test');
+        $response->assertRedirectedBack('/original-url');
         $response->assertSessionHas('flash', 'You will no longer receive our newsletter at ' . $subscription->email);
         $this->assertDatabaseMissing($this->config('table_name'), ['email'=>$subscription->email]);
     }
