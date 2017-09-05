@@ -14,10 +14,6 @@ class NewsletterSubscriptionServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadRoutesFrom(__DIR__.'/../../routes/web.php');
-        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations/');
-        $this->loadViewsFrom(__DIR__.'/../../resources/views/', 'riverskies');
-
         $this->mergeConfigFrom(
             __DIR__ . '/../../config/newsletter_subscription.php', 'newsletter_subscription'
         );
@@ -25,6 +21,10 @@ class NewsletterSubscriptionServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../../config/newsletter_subscription.php' => config_path('newsletter_subscription.php'),
         ]);
+
+        $this->loadRoutesFrom(__DIR__.'/../../routes/web.php');
+        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations/');
+        $this->loadViewsFrom(__DIR__.'/../../resources/views/', 'riverskies');
     }
 
     /**

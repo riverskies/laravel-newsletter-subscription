@@ -16,7 +16,7 @@ class UnsubscribeFromNewsletterTest extends TestCase
     {
         $subscription = factory(NewsletterSubscription::class)->create();
 
-        $response = $this->get("/unsubscribe/{$subscription->hash}");
+        $response = $this->get($this->getUnsubscribeUrlFor($subscription->hash));
 
         $response->assertRedirect('/');
         $response->assertSessionHas('flash', 'You will no longer receive our newsletter at ' . $subscription->email);
@@ -29,6 +29,6 @@ class UnsubscribeFromNewsletterTest extends TestCase
         $subscription = factory(NewsletterSubscription::class)->create();
         $message = new NewsletterSubscriptionConfirmation($subscription);
 
-        $this->assertContains(url("/unsubscribe/{$subscription->hash}"), $message->build()->render());
+        $this->assertContains(url($this->getUnsubscribeUrlFor($subscription->hash)), $message->build()->render());
     }
 }

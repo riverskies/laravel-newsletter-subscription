@@ -36,6 +36,6 @@ class NewsletterSubscriptionConfirmationTest extends TestCase
         $subscription = factory(NewsletterSubscription::class)->create();
         $mail = new NewsletterSubscriptionConfirmation($subscription);
 
-        $this->assertContains(url("/unsubscribe/$subscription->hash"), $mail->build()->render());
+        $this->assertContains(url($this->getUnsubscribeUrlFor($subscription->hash)), $mail->build()->render());
     }
 }

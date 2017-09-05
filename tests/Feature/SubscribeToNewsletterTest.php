@@ -16,9 +16,10 @@ class SubscribeToNewsletterTest extends TestCase
     /** @test */
     public function people_can_subscribe_to_receive_newsletters()
     {
-        $this->withoutExceptionHandling();
         Mail::fake();
-        $response = $this->post('/subscribe', ['email'=>'john@example.com']);
+        $this->withoutExceptionHandling();
+
+        $response = $this->post($this->subscribeUrl, ['email'=>'john@example.com']);
 
         $response->assertRedirect('/');
         $this->assertDatabaseHas($this->table, ['email'=>'john@example.com']);
@@ -32,7 +33,7 @@ class SubscribeToNewsletterTest extends TestCase
         factory(NewsletterSubscription::class)->create(['email'=>'john@example.com']);
         $this->assertCount(1, NewsletterSubscription::all());
 
-        $response = $this->post('/subscribe', ['email'=>'john@example.com']);
+        $response = $this->post($this->subscribeUrl, ['email'=>'john@example.com']);
 
         $response->assertRedirect('/');
         $this->assertCount(1, NewsletterSubscription::all());
@@ -45,7 +46,7 @@ class SubscribeToNewsletterTest extends TestCase
     public function a_confirmation_email_is_queued_to_be_sent_after_each_new_subscription()
     {
         Queue::fake();
-        $this->post('/subscribe', ['email'=>'john@example.com']);
+        $this->post($this->subscribeUrl, ['email'=>'john@example.com']);
 
         $subscription = NewsletterSubscription::first();
 
@@ -57,7 +58,7 @@ class SubscribeToNewsletterTest extends TestCase
     /** @test */
     public function the_email_is_required()
     {
-        $response = $this->post('/subscribe', []);
+        $response = $this->post($this->subscribeUrl, []);
 
         $response->assertRedirect('/');
         $response->assertSessionHasErrors('email');
@@ -67,7 +68,7 @@ class SubscribeToNewsletterTest extends TestCase
     /** @test */
     public function the_email_must_be_a_valid_address()
     {
-        $response = $this->post('/subscribe', ['email'=>'gibberish']);
+        $response = $this->post($this->subscribeUrl, ['email'=>'gibberish']);
 
         $response->assertRedirect('/');
         $response->assertSessionHasErrors('email');
