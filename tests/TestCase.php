@@ -7,10 +7,12 @@ use Riverskies\LaravelNewsletterSubscription\Providers\NewsletterSubscriptionSer
 
 class TestCase extends OrchestraTestCase
 {
+    protected $table;
+
     public function setUp()
     {
         parent::setUp();
-
+        $this->table = config('newsletter_subscription.table_name');
         $this->withFactories(__DIR__.'/../database/factories');
     }
 

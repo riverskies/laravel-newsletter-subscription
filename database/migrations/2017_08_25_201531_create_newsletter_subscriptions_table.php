@@ -13,7 +13,7 @@ class CreateNewsletterSubscriptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('newsletter_subscriptions', function (Blueprint $table) {
+        Schema::create(config('newsletter_subscription.table_name'), function (Blueprint $table) {
             $table->increments('id');
             $table->string('email')->unique();
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateNewsletterSubscriptionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('newsletter_subscriptions');
+        Schema::dropIfExists(config('newsletter_subscription.table_name'));
     }
 }

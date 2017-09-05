@@ -21,7 +21,7 @@ class SubscribeToNewsletterTest extends TestCase
         $response = $this->post('/subscribe', ['email'=>'john@example.com']);
 
         $response->assertRedirect('/');
-        $this->assertDatabaseHas('newsletter_subscriptions', ['email'=>'john@example.com']);
+        $this->assertDatabaseHas($this->table, ['email'=>'john@example.com']);
         $response->assertSessionHas('flash', 'You will receive the latest news at john@example.com');
     }
 
@@ -36,7 +36,7 @@ class SubscribeToNewsletterTest extends TestCase
 
         $response->assertRedirect('/');
         $this->assertCount(1, NewsletterSubscription::all());
-        $this->assertDatabaseHas('newsletter_subscriptions', ['email'=>'john@example.com']);
+        $this->assertDatabaseHas($this->table, ['email'=>'john@example.com']);
         $response->assertSessionHas('flash', 'You will receive the latest news at john@example.com');
         Queue::assertNotPushed(SendNewsletterSubscriptionConfirmation::class);
     }

@@ -20,7 +20,7 @@ class UnsubscribeFromNewsletterTest extends TestCase
 
         $response->assertRedirect('/');
         $response->assertSessionHas('flash', 'You will no longer receive our newsletter at ' . $subscription->email);
-        $this->assertDatabaseMissing('newsletter_subscriptions', ['email'=>$subscription->email]);
+        $this->assertDatabaseMissing($this->table, ['email'=>$subscription->email]);
     }
 
     /** @test */
