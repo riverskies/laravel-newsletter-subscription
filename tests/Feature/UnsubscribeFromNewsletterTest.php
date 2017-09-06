@@ -23,8 +23,8 @@ class UnsubscribeFromNewsletterTest extends TestCase
 
         $response->assertRedirectedBack('/original-url');
         $this->assertDatabaseMissing($this->config('table_name'), ['email'=>$subscription->email]);
-        $response->assertSessionHas('flash', 'You will no longer receive our newsletter at ' . $subscription->email);
-        $response->assertSessionHas('flash', trans('riverskies::newsletter_subscription.unsubscribe', ['email'=>$subscription->email]));
+        $response->assertSessionHas($this->config('session_message_key'), 'You will no longer receive our newsletter at ' . $subscription->email);
+        $response->assertSessionHas($this->config('session_message_key'), trans('riverskies::newsletter_subscription.unsubscribe', ['email'=>$subscription->email]));
     }
 
     /** @test */

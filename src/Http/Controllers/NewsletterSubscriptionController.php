@@ -24,7 +24,7 @@ class NewsletterSubscriptionController extends Controller
         }
 
         return redirect()->back()
-            ->with('flash', trans('riverskies::newsletter_subscription.subscribe', ['email' => $data['email']]));
+            ->with(config('newsletter_subscription.session_message_key'), trans('riverskies::newsletter_subscription.subscribe', ['email' => $data['email']]));
     }
 
     /**
@@ -37,6 +37,6 @@ class NewsletterSubscriptionController extends Controller
         $subscription->delete();
 
         return redirect()->back()
-            ->with('flash', trans('riverskies::newsletter_subscription.unsubscribe', ['email' => $subscription->email]));
+            ->with(config('newsletter_subscription.session_message_key'), trans('riverskies::newsletter_subscription.unsubscribe', ['email' => $subscription->email]));
     }
 }

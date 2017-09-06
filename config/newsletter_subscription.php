@@ -14,7 +14,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Subscribe URL route
+    | Subscribe URL Route
     |--------------------------------------------------------------------------
     |
     | You can override the route to subscribe to a newsletter.
@@ -25,7 +25,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Unsubscribe URL route
+    | Unsubscribe URL Route
     |--------------------------------------------------------------------------
     |
     | You can override the route to unsubscribe from a newsletter. Ensure
@@ -33,5 +33,17 @@ return [
     |
     */
 
-    'unsubscribe_url' => '/unsubscribe/{hash}'
+    'unsubscribe_url' => '/unsubscribe/{hash}',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Session Message Key
+    |--------------------------------------------------------------------------
+    |
+    | This is the key that will be used when flashing messages to the session
+    | after a successful transaction (like subscribe or unsubscribe). 
+    |
+    */
+
+    'session_message_key' => 'flash'
 ];

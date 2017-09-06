@@ -28,8 +28,8 @@ class SubscribeToNewsletterTest extends TestCase
 
         $response->assertRedirectedBack('/original-url');
         $this->assertDatabaseHas($this->config('table_name'), ['email'=>$email]);
-        $response->assertSessionHas('flash', "You will receive the latest news at {$email}");
-        $response->assertSessionHas('flash', trans('riverskies::newsletter_subscription.subscribe', ['email'=>$email]));
+        $response->assertSessionHas($this->config('session_message_key'), "You will receive the latest news at {$email}");
+        $response->assertSessionHas($this->config('session_message_key'), trans('riverskies::newsletter_subscription.subscribe', ['email'=>$email]));
     }
 
     /** @test */
@@ -44,7 +44,7 @@ class SubscribeToNewsletterTest extends TestCase
         $response->assertRedirectedBack();
         $this->assertCount(1, NewsletterSubscription::all());
         $this->assertDatabaseHas($this->config('table_name'), ['email'=>'john@example.com']);
-        $response->assertSessionHas('flash', trans('riverskies::newsletter_subscription.subscribe', ['email'=>'john@example.com']));
+        $response->assertSessionHas($this->config('session_message_key'), trans('riverskies::newsletter_subscription.subscribe', ['email'=>'john@example.com']));
         Queue::assertNotPushed(SendNewsletterSubscriptionConfirmation::class);
     }
 

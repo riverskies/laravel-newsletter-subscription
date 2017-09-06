@@ -19,7 +19,7 @@ class MessagesCanBeLocalisedTest extends TestCase
 
         $response = $this->post($this->config('subscribe_url'), ['email'=>'john@example.com']);
 
-        $response->assertSessionHas('flash', 'Sikeresen feliratkozott hírlevelünkre a(z) john@example.com email címmel');
+        $response->assertSessionHas($this->config('session_message_key'), 'Sikeresen feliratkozott hírlevelünkre a(z) john@example.com email címmel');
     }
 
     /** @test */
@@ -30,6 +30,6 @@ class MessagesCanBeLocalisedTest extends TestCase
 
         $response = $this->get($this->getUnsubscribeUrlFor($subscription->hash));
 
-        $response->assertSessionHas('flash', "Sikeresen leiratkozott hírlevelünkről a(z) {$subscription->email} email címmel");
+        $response->assertSessionHas($this->config('session_message_key'), "Sikeresen leiratkozott hírlevelünkről a(z) {$subscription->email} email címmel");
     }
 }
