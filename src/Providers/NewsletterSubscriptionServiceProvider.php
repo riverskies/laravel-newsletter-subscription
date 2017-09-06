@@ -20,9 +20,15 @@ class NewsletterSubscriptionServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/../../config/newsletter_subscription.php' => config_path('newsletter_subscription.php'),
+        ], 'newsletter-subscription-config');
+
+        $this->publishes([
             __DIR__ . '/../../resources/views' => resource_path('views/vendor/riverskies'),
+        ], 'newsletter-subscription-views');
+
+        $this->publishes([
             __DIR__.'/../../resources/lang' => resource_path('lang/vendor/riverskies'),
-        ]);
+        ], 'newsletter-subscription-translations');
 
         $this->loadRoutesFrom(__DIR__.'/../../routes/web.php');
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations/');

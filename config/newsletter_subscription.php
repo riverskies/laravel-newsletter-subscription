@@ -41,7 +41,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | This is the key that will be used when flashing messages to the session
-    | after a successful transaction (like subscribe or unsubscribe). 
+    | after a successful transaction (like subscribe or unsubscribe).
     |
     */
 
