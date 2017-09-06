@@ -1,1 +1,1 @@
-<a href="{{ url(str_replace('{hash}', $subscription->hash, config('newsletter_subscription.unsubscribe_url'))) }}">Unsubscribe</a>
+<a href="{{ url($subscription->unsubscribeUrl) }}">Unsubscribe</a>

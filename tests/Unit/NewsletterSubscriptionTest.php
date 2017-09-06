@@ -16,4 +16,11 @@ class NewsletterSubscriptionTest extends TestCase
         $subscription = factory(NewsletterSubscription::class)->create();
         $this->assertNotEmpty($subscription->hash);
     }
+
+    /** @test */
+    public function a_subscription_can_generate_its_unsubscribe_url()
+    {
+        $subscription = factory(NewsletterSubscription::class)->create();
+        $this->assertEquals("/unsubscribe/{$subscription->hash}", $subscription->unsubscribeUrl);
+    }
 }
