@@ -18,16 +18,18 @@ class SubscribeToNewsletterTest extends TestCase
     {
         Mail::fake();
         $this->withoutExceptionHandling();
+        $email = app(\Faker\Generator::class)->email;
 
         $response = $this->post(
             $this->config('subscribe_url'),
-            ['email' => 'john@example.com'],
+            ['email' => $email],
             ['HTTP_REFERER' => '/original-url']
         );
 
         $response->assertRedirectedBack('/original-url');
-        $this->assertDatabaseHas($this->config('table_name'), ['email'=>'john@example.com']);
-        $response->assertSessionHas('flash', 'You will receive the latest news at john@example.com');
+        $this->assertDatabaseHas($this->config('table_name'), ['email'=>$email]);
+        $response->assertSessionHas('flash', "You will receive the latest news at {$email}");
+        $response->assertSessionHas('flash', trans('riverskies::newsletter_subscription.subscribe', ['email'=>$email]));
     }
 
     /** @test */
@@ -42,7 +44,7 @@ class SubscribeToNewsletterTest extends TestCase
         $response->assertRedirectedBack();
         $this->assertCount(1, NewsletterSubscription::all());
         $this->assertDatabaseHas($this->config('table_name'), ['email'=>'john@example.com']);
-        $response->assertSessionHas('flash', 'You will receive the latest news at john@example.com');
+        $response->assertSessionHas('flash', trans('riverskies::newsletter_subscription.subscribe', ['email'=>'john@example.com']));
         Queue::assertNotPushed(SendNewsletterSubscriptionConfirmation::class);
     }
 

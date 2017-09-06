@@ -9,6 +9,7 @@ use Riverskies\LaravelNewsletterSubscription\Providers\NewsletterSubscriptionSer
 class TestCase extends OrchestraTestCase
 {
     private $config;
+    private $language;
 
     /**
      * Default overrides.
@@ -59,5 +60,19 @@ class TestCase extends OrchestraTestCase
     {
         $this->assertArrayHasKey($key, $this->config);
         return $this->config[$key];
+    }
+
+    /**
+     * Language accessor.
+     *
+     * @param $key
+     * @param array $data
+     * @return mixed
+     */
+    public function language($key, $data = [])
+    {
+        $this->assertArrayHasKey($key, $this->language);
+
+        return app('translator')->trans($key, $data);
     }
 }

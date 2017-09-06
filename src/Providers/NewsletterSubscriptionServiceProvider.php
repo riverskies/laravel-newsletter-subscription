@@ -25,6 +25,7 @@ class NewsletterSubscriptionServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__.'/../../routes/web.php');
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations/');
         $this->loadViewsFrom(__DIR__.'/../../resources/views/', 'riverskies');
+        $this->loadTranslationsFrom(__DIR__.'/../../resources/lang/', 'riverskies');
     }
 
     /**
