@@ -26,5 +26,12 @@
         "psr-4": {
             "Tests\\": "tests/"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Riverskies\\LaravelNewsletterSubscription\\Providers\\NewsletterSubscriptionServiceProvider"
+            ]
+        }
     }
 }
