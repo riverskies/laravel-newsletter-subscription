@@ -35,6 +35,8 @@ class NewsletterSubscriptionConfirmation extends Mailable
      */
     public function build()
     {
-        return $this->view('riverskies::mails.newsletter-subscription-confirmation');
+        return config('newsletter_subscription.mail') == 'markdown'
+            ? $this->markdown('riverskies::mails.newsletter-subscription-confirmation')
+            : $this->view('riverskies::mails.newsletter-subscription-confirmation');
     }
 }
