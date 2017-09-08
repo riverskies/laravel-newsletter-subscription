@@ -3,9 +3,12 @@
 namespace Riverskies\LaravelNewsletterSubscription;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class NewsletterSubscription extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = ['email'];
 
     /**

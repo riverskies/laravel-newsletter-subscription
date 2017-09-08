@@ -5,6 +5,7 @@ namespace Tests;
 use Dotenv\Dotenv;
 use Illuminate\Foundation\Testing\TestResponse;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use Riverskies\LaravelNewsletterSubscription\NewsletterSubscription;
 use Riverskies\LaravelNewsletterSubscription\Providers\NewsletterSubscriptionServiceProvider;
 
 class TestCase extends OrchestraTestCase
@@ -40,6 +41,18 @@ class TestCase extends OrchestraTestCase
     protected function getPackageProviders($app)
     {
         return [NewsletterSubscriptionServiceProvider::class];
+    }
+
+    /**
+     * Assert soft deleted model.
+     *
+     * @param $table
+     * @param $data
+     */
+    protected function assertDatabaseHasSoftDeleted($table, $data)
+    {
+        $this->assertDatabaseHas($table, $data);
+        $this->assertDatabaseMissing($table, array_merge($data, ['deleted_at'=>null]));
     }
 
     /**
