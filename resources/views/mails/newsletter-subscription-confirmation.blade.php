@@ -1,5 +1,12 @@
-<h1>Hello!</h1>
+@component('mail::message')
+# Happy days!
 
-<p>Thanks for subscribing to our newsletter. We will notify you when there is an update worth mentioning!</p>
+You have successfully subscribed to our newsletter!
 
-<p><small><a href="{{ url($subscription->unsubscribeUrl) }}">Unsubscribe here</a></small></p>
+If you wish to unsubscribe, you can do that [here]({{ url($subscription->unsubscribeUrl) }}) or by copying the below URL into your browser:
+
+{{ url($subscription->unsubscribeUrl) }}
+
+Thanks,<br>
+The {{ config('app.name') }} Team
+@endcomponent
