@@ -14,6 +14,9 @@ class NewsletterSubscriptionServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->make('Illuminate\Database\Eloquent\Factory')
+            ->load(__DIR__ . '/../../database/factories');
+
         $this->mergeConfigFrom(
             __DIR__ . '/../../config/newsletter_subscription.php', 'newsletter_subscription'
         );
