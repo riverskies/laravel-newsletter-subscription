@@ -39,7 +39,7 @@ This package collects email addresses and stores them in the database. You can a
 This package uses the `Mail` facade to deliver the emails and delivery is queued, so ensure your `QUEUE_DRIVER` in your environment config is set accordingly.
 
 ## Publishing assets
-You can override the database table name, the associated URLs and the session key by overriding the default configuration values.
+You can override the database table name, the associated URLs, email template format and the session key by overriding the default configuration values.
 ```sh
 $ php artisan vendor:publish --tag='newsletter-subscription-config'
 ```
