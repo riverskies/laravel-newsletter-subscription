@@ -16,9 +16,14 @@ class NewsletterSubscriptionController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate(['email'=>'required|email']);
-        $existingSubscription = NewsletterSubscription::whereEmail($data['email'])->get();
+        $existingSubscription = NewsletterSubscription::withTrashed()->whereEmail($data['email'])->first();
 
-        if (!$existingSubscription->count()) {
+        if ($existingSubscription) {
+            if ($existingSubscription->trashed()) {
+                $existingSubscription->restore();
+                SendNewsletterSubscriptionConfirmation::dispatch($existingSubscription);
+            }
+        } else {
             $subscription = NewsletterSubscription::create(['email'=>$data['email']]);
             SendNewsletterSubscriptionConfirmation::dispatch($subscription);
         }

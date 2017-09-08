@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
@@ -46,6 +47,24 @@ class SubscribeToNewsletterTest extends TestCase
         $this->assertDatabaseHas($this->config('table_name'), ['email'=>'john@example.com']);
         $response->assertSessionHas($this->config('session_message_key'), trans('riverskies::newsletter_subscription.subscribe', ['email'=>'john@example.com']));
         Queue::assertNotPushed(SendNewsletterSubscriptionConfirmation::class);
+    }
+
+    /** @test */
+    public function people_who_have_unsubscribed_before_will_enable_their_old_subscription_when_subscribing_again()
+    {
+        Queue::fake();
+        factory(NewsletterSubscription::class)->create(['email'=>'john@example.com', 'deleted_at'=>Carbon::now()]);
+        $this->assertCount(1, NewsletterSubscription::withTrashed()->get());
+        $this->assertCount(0, NewsletterSubscription::all());
+
+        $response = $this->post($this->config('subscribe_url'), ['email'=>'john@example.com']);
+
+        $response->assertRedirectedBack();
+        $this->assertCount(1, NewsletterSubscription::all());
+        $this->assertCount(1, NewsletterSubscription::withTrashed()->get());
+        $this->assertDatabaseHas($this->config('table_name'), ['email'=>'john@example.com', 'deleted_at'=>null]);
+        $response->assertSessionHas($this->config('session_message_key'), trans('riverskies::newsletter_subscription.subscribe', ['email'=>'john@example.com']));
+        Queue::assertPushed(SendNewsletterSubscriptionConfirmation::class);
     }
 
     /** @test */
