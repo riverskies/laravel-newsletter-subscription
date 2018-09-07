@@ -25,7 +25,7 @@ class NewsletterSubscriptionConfirmation extends Mailable
     public function __construct(NewsletterSubscription $subscription)
     {
         $this->subscription = $subscription;
-        $this->subject('Thanks for signing up to our newsletter!');
+        $this->subject(trans('riverskies::newsletter_subscription.subject'));
     }
 
     /**
