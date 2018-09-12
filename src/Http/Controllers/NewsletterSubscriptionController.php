@@ -39,9 +39,15 @@ class NewsletterSubscriptionController extends Controller
     public function destroy($hash)
     {
         $subscription = app('subscription-code-generator')->decode($hash);
-        $subscription->delete();
 
-        return redirect()->back()
-            ->with(config('newsletter_subscription.session_message_key'), trans('riverskies::newsletter_subscription.unsubscribe', ['email' => $subscription->email]));
+        if ($subscription){
+            $subscription->delete();
+
+            return redirect()->back()
+                ->with(config('newsletter_subscription.session_message_key'), trans('riverskies::newsletter_subscription.unsubscribe', ['email' => $subscription->email]));
+        } else{
+            return redirect()->back()
+                ->with(config('newsletter_subscription.session_message_key'), trans('riverskies::newsletter_subscription.unsubscribed'));
+        }
     }
 }

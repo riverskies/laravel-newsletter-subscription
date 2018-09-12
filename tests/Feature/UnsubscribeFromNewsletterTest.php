@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Riverskies\LaravelNewsletterSubscription\Mail\NewsletterSubscriptionConfirmation;
 use Riverskies\LaravelNewsletterSubscription\NewsletterSubscription;
@@ -25,6 +26,22 @@ class UnsubscribeFromNewsletterTest extends TestCase
         $this->assertDatabaseHasSoftDeleted($this->config('table_name'), ['email'=>$subscription->email]);
         $response->assertSessionHas($this->config('session_message_key'), 'You will no longer receive our newsletter at ' . $subscription->email);
         $response->assertSessionHas($this->config('session_message_key'), trans('riverskies::newsletter_subscription.unsubscribe', ['email'=>$subscription->email]));
+    }
+
+    /** @test */
+    public function people_who_already_unsubscribed_click_unsubcribe_link()
+    {
+        $subscription =  factory(NewsletterSubscription::class)->create(['email'=>'john@example.com', 'deleted_at'=>Carbon::now()]);
+
+        $response = $this->get(
+            $this->getUnsubscribeUrlFor($subscription->hash),
+            ['HTTP_REFERER' => '/original-url']
+        );
+
+        $response->assertRedirectedBack('/original-url');
+        $this->assertDatabaseHasSoftDeleted($this->config('table_name'), ['email'=>$subscription->email]);
+        $response->assertSessionHas($this->config('session_message_key'), 'You are already unsubscribed from our newsletter.');
+        $response->assertSessionHas($this->config('session_message_key'), trans('riverskies::newsletter_subscription.unsubscribed'));
     }
 
     /** @test */
