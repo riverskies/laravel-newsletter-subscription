@@ -3,6 +3,7 @@
 namespace Riverskies\LaravelNewsletterSubscription;
 
 use Hashids\Hashids;
+use Illuminate\Support\Arr;
 
 class HashIdsSubscriptionCodeGenerator
 {
@@ -33,7 +34,7 @@ class HashIdsSubscriptionCodeGenerator
      */
     public function decode($hash)
     {
-        $id = array_first($this->hashIds->decode($hash));
+        $id = Arr::first($this->hashIds->decode($hash));
         return NewsletterSubscription::find($id);
     }
 }
